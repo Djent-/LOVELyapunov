@@ -1,5 +1,6 @@
 --main.lua
 --based on the golfed code in the codegolf stackexchange
+--looks best at around 600-1600 iterations
 
 function love.load()
 	DIM = 512 --1024 in the original
