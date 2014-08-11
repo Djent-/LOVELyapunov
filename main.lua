@@ -9,34 +9,67 @@ function love.load()
 	math.randomseed(os.time())
 	math.random();math.random();
 	DIM = 512 --1024 in the original
-	MAX_ITERATIONS = 1000
+	MAX_ITERATIONS = 2500
+	CURRENT_ITERATIONS = 70
 	love.window.setMode(DIM,DIM)
 	canvas = love.graphics.newCanvas(DIM,DIM)
+	--[[
 	love.graphics.setCanvas(canvas)
-	local ymin, ymax, xmin, xmax = 2, 4, 2, 4
+	local ymin, ymax, xmin, xmax = 0, 10, 0, 10
 	local increment = (ymax - ymin) / DIM
+	local i = iterations or CURRENT_ITERATIONS
 	for y = ymin, ymax, increment do
 		for x = xmin, xmax, increment do
-			love.graphics.setColor(red(x,y), green(x,y), blue(x,y))
+			love.graphics.setColor(red(x,y,i), green(x,y,i), blue(x,y,i))
 			local _x = math.abs((x - xmin) / increment)
 			local _y = math.abs((y - ymin) / increment)
 			love.graphics.rectangle("fill",_x, _y,1,1)
 		end
 	end
-	love.graphics.setColor(255,255,255)
-	love.graphics.print("Finished drawing",10,10)
-	print("Finished drawing")
+	love.graphics.setCanvas()
+	--]]
+	draw_fractal(CURRENT_ITERATIONS,canvas)
+end
+
+function draw_fractal(iterations, lcanvas)
+	love.graphics.setCanvas(canvas)
+	local ymin, ymax, xmin, xmax = 0, 400, 0, 400
+	local increment = (ymax - ymin) / DIM
+	local i = iterations
+	for y = ymin, ymax, increment do
+		for x = xmin, xmax, increment do
+			love.graphics.setColor(red(x,y,i), green(x,y,i), blue(x,y,i))
+			local _x = math.abs((x - xmin) / increment)
+			local _y = math.abs((y - ymin) / increment)
+			love.graphics.rectangle("fill",_x, _y,1,1)
+		end
+	end
 	love.graphics.setCanvas()
 end
 
+--[ [
+function love.update(dt)
+	love.timer.sleep(1)
+	if CURRENT_ITERATIONS < MAX_ITERATIONS then
+		CURRENT_ITERATIONS = CURRENT_ITERATIONS + 10
+	end
+	draw_fractal(CURRENT_ITERATIONS,canvas)
+end
+--]]
+
 function love.draw()
+	love.graphics.setColor(255,255,255)
 	love.graphics.draw(canvas,1,1)
+	love.graphics.setColor(255,255,255)
+	love.graphics.print("Drawing",10,10)
+	love.graphics.print(CURRENT_ITERATIONS,10,20)
+	love.graphics.setColor(0,0,0)
 	love.graphics.print("Drawing",10,30)
 end
 
-function red(i, j)
+function red(i, j, iter)
 	local r, s, x = nil, 0, 0.5
-	for k = 0, MAX_ITERATIONS do
+	for k = 0, CURRENT_ITERATIONS do
 		if k % 5 == 2 or k % 5 == 4 then
 			r = (2 * j) / DIM + 2
 		else
@@ -48,9 +81,9 @@ function red(i, j)
 	return math.abs(s)
 end
 
-function green(i, j)
+function green(i, j, iter)
 	local r, s, x = nil, 0, 0.5
-	for k = 0, MAX_ITERATIONS do
+	for k = 0, CURRENT_ITERATIONS do
 		if k % 5 == 2 or k % 5 == 4 then
 			r = (2 * j) / DIM + 2
 		else
@@ -66,9 +99,9 @@ function green(i, j)
 	end
 end
 
-function blue(i, j)
+function blue(i, j, iter)
 	local r, s, x = nil, 0, 0.5
-	for k = 0, MAX_ITERATIONS do
+	for k = 0, CURRENT_ITERATIONS do
 		if k % 5 == 2 or k % 5 == 4 then
 			r = (2 * j) / DIM + 2
 		else
