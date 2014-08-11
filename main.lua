@@ -64,7 +64,6 @@ function love.draw()
 	love.graphics.print("Drawing",10,10)
 	love.graphics.print(CURRENT_ITERATIONS,10,20)
 	love.graphics.setColor(0,0,0)
-	love.graphics.print("Drawing",10,30)
 end
 
 function red(i, j, iter)
