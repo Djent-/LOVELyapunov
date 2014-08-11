@@ -2,8 +2,6 @@
 --based on the golfed code in the codegolf stackexchange
 
 function love.load()
-	math.randomseed(os.time())
-	math.random();math.random();
 	DIM = 512 --1024 in the original
 	D_ITERATIONS = 100
 	global_k = 0
@@ -31,13 +29,11 @@ function draw_fractal_n(iterations)
 	love.graphics.setCanvas()
 end
 
---[ [
 function love.update(dt)
 	love.timer.sleep(1)
 	global_k = global_k + D_ITERATIONS
 	draw_fractal_n(D_ITERATIONS,canvas)
 end
---]]
 
 function love.draw()
 	love.graphics.setColor(255,255,255)
@@ -76,50 +72,4 @@ end
 
 function write_array(i,j,x,s)
 	ARRAY[j][i] = {["x"] = x, ["s"] = s}
-end
-
-function red(i, j, iter)
-	local r, s, x = nil, 0, 0.5
-	for k = 0, CURRENT_ITERATIONS do
-		if k % 5 == 2 or k % 5 == 4 then
-			r = (2 * j) / DIM + 2
-		else
-			r = (2 * i) / DIM + 2
-		end
-		x = x * r * (1 - x)
-		s = s + math.log(math.abs(r - r * 2 * x))
-	end
-	return math.abs(s)
-end
-
-function green(i, j, iter)
-	local r, s, x = nil, 0, 0.5
-	for k = 0, CURRENT_ITERATIONS do
-		if k % 5 == 2 or k % 5 == 4 then
-			r = (2 * j) / DIM + 2
-		else
-			r = (2 * i) / DIM + 2
-		end
-		x = x * r * (1 - x)
-		s = s + math.log(math.abs(r - r * 2 * x))
-	end
-	if s > 0 then
-		return s
-	else
-		return 0
-	end
-end
-
-function blue(i, j, iter)
-	local r, s, x = nil, 0, 0.5
-	for k = 0, CURRENT_ITERATIONS do
-		if k % 5 == 2 or k % 5 == 4 then
-			r = (2 * j) / DIM + 2
-		else
-			r = (2 * i) / DIM + 2
-		end
-		x = x * r * (1 - x)
-		s = s + math.log(math.abs(r - r * 2 * x))
-	end
-	return math.abs(s * x)
 end
