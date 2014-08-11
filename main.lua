@@ -13,22 +13,7 @@ function love.load()
 	CURRENT_ITERATIONS = 70
 	love.window.setMode(DIM,DIM)
 	canvas = love.graphics.newCanvas(DIM,DIM)
-	--[[
-	love.graphics.setCanvas(canvas)
-	local ymin, ymax, xmin, xmax = 0, 10, 0, 10
-	local increment = (ymax - ymin) / DIM
-	local i = iterations or CURRENT_ITERATIONS
-	for y = ymin, ymax, increment do
-		for x = xmin, xmax, increment do
-			love.graphics.setColor(red(x,y,i), green(x,y,i), blue(x,y,i))
-			local _x = math.abs((x - xmin) / increment)
-			local _y = math.abs((y - ymin) / increment)
-			love.graphics.rectangle("fill",_x, _y,1,1)
-		end
-	end
-	love.graphics.setCanvas()
-	--]]
-	draw_fractal(CURRENT_ITERATIONS,canvas)
+	draw_fractal_n(CURRENT_ITERATIONS,canvas)
 end
 
 function draw_fractal(iterations, lcanvas)
@@ -47,13 +32,25 @@ function draw_fractal(iterations, lcanvas)
 	love.graphics.setCanvas()
 end
 
+function draw_fractal_n(iterations)
+	love.graphics.setCanvas(canvas)
+	local i = iterations
+	for y = 1, DIM do
+		for x = 1, DIM do
+			love.graphics.setColor(red(x,y,i), green(x,y,i), blue(x,y,i))
+			love.graphics.rectangle("fill", x, y, 1, 1)
+		end
+	end
+	love.graphics.setCanvas()
+end
+
 --[ [
 function love.update(dt)
 	love.timer.sleep(1)
 	if CURRENT_ITERATIONS < MAX_ITERATIONS then
 		CURRENT_ITERATIONS = CURRENT_ITERATIONS + 10
 	end
-	draw_fractal(CURRENT_ITERATIONS,canvas)
+	draw_fractal_n(CURRENT_ITERATIONS,canvas)
 end
 --]]
 
